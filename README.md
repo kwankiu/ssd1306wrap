@@ -1,5 +1,5 @@
 # OLED Display Library for Micropython (ssd1306wrap)
-A font for micropython on 128x64 pixel ssd1306 oled display. 
+A micropython library with font size support for 128x64 pixel ssd1306 oled display.
 
 Based on [ssd1306.py](https://github.com/stlehmann/micropython-ssd1306/blob/master/ssd1306.py) from micropython module. 
 
