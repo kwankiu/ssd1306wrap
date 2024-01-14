@@ -156,7 +156,6 @@ class SSD1306(framebuf.FrameBuffer):
             '+': plus,
             '-': minus,
             '=': equal,
-            ' ': space,
         }
 
         # Loop through each character in the text and call the corresponding function
@@ -164,9 +163,25 @@ class SSD1306(framebuf.FrameBuffer):
             char = text[i]
             if char in char_function_map:
                 char_function_map[char](x, y, self, font_size, fill)
-                x = x + (font_size * 5)
+            x = x + (font_size * 5)
 
+    def bold_wrap(self, text, x, y, font_size=2, fill=1):
+        for i in range(font_size):
+            self.wrap(text, x+i, y, font_size, fill)
+            self.wrap(text, x, y+i, font_size, fill)
 
+    def overlap_wrap(self, text, x, y, font_size=2, fill=1, overlap=2):
+            self.wrap(text, x, y, font_size, fill)
+            if overlap >= 2:
+                self.wrap(text, x+1, y+1, font_size, fill)
+            if overlap >= 1:
+                self.wrap(text, x+2, y+2, font_size, fill)
+
+    def bold_text(self, text, x, y, fill=1):
+        self.text(text, x + 1, y, fill)
+        self.text(text, x, y, fill)
+
+    
 class SSD1306_I2C(SSD1306):
     def __init__(self, width, height, i2c, addr=0x3C, external_vcc=False):
         self.i2c = i2c
@@ -230,7 +245,7 @@ def A(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 5),int(y + font_size * 1),int(x + font_size * 10),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 3),int(y + font_size * 11),int(x + font_size * 8),int(y + font_size * 11),fill)
 
-    oled.show()
+    
     
 def B(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -246,7 +261,7 @@ def B(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 9),int(y + font_size * 10),int(x + font_size * 9),int(y + font_size * 12),fill)
     oled.line(int(x + font_size * 9),int(y + font_size * 12),int(x + font_size * 6),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 6),int(y + font_size * 15),int(x + font_size * 1),int(y + font_size * 15),fill)
-    oled.show()    
+        
     
 def C(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -260,7 +275,7 @@ def C(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 1),int(y + font_size * 12),int(x + font_size * 4),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 4),int(y + font_size * 15),int(x + font_size * 8),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 8),int(y + font_size * 15),int(x + font_size * 10),int(y + font_size * 13),fill)
-    oled.show()
+    
     
 def D(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -272,7 +287,7 @@ def D(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 9),int(y + font_size * 3),int(x + font_size * 9),int(y + font_size * 12),fill)
     oled.line(int(x + font_size * 9),int(y + font_size * 12),int(x + font_size * 6),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 6),int(y + font_size * 15),int(x + font_size * 1),int(y + font_size * 15),fill)
-    oled.show()
+    
     
 def E(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -282,7 +297,7 @@ def E(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 1),int(y + font_size * 1),int(x + font_size * 9),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 7),int(x + font_size * 7),int(y + font_size * 7),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 15),int(x + font_size * 9),int(y + font_size * 15),fill)
-    oled.show()
+    
     
 def F(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -291,7 +306,7 @@ def F(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 1),int(y + font_size * 15),int(x + font_size * 1),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 1),int(x + font_size * 9),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 7),int(x + font_size * 6),int(y + font_size * 7),fill)
-    oled.show()
+    
     
 def G(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -307,7 +322,7 @@ def G(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 8),int(y + font_size * 15),int(x + font_size * 10),int(y + font_size * 13),fill)
     oled.line(int(x + font_size * 10),int(y + font_size * 13),int(x + font_size * 10),int(y + font_size * 9),fill)
     oled.line(int(x + font_size * 10),int(y + font_size * 9),int(x + font_size * 6),int(y + font_size * 9),fill)    
-    oled.show()
+    
 
 def H(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -316,7 +331,7 @@ def H(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 1),int(y + font_size * 15),int(x + font_size * 1),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 7),int(x + font_size * 9),int(y + font_size * 7),fill)
     oled.line(int(x + font_size * 9),int(y + font_size * 15),int(x + font_size * 9),int(y + font_size * 1),fill)
-    oled.show()
+    
 
 def I(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -325,7 +340,7 @@ def I(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 1),int(y + font_size * 1),int(x + font_size * 9),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 15),int(x + font_size * 9),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 5),int(y + font_size * 15),int(x + font_size * 5),int(y + font_size * 1),fill)
-    oled.show()
+    
 
 def J(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -335,7 +350,7 @@ def J(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 9),int(y + font_size * 10),int(x + font_size * 7),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 7),int(y + font_size * 15),int(x + font_size * 3),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 3),int(y + font_size * 15),int(x + font_size * 1),int(y + font_size * 10),fill)
-    oled.show()
+    
     
 def K(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -344,7 +359,7 @@ def K(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 1),int(y + font_size * 15),int(x + font_size * 1),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 9),int(x + font_size * 8),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 4),int(y + font_size * 7),int(x + font_size * 9),int(y + font_size * 15),fill)
-    oled.show()
+    
 
 def L(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -352,7 +367,7 @@ def L(x, y, oled, font_size=2, fill=1):
 
     oled.line(int(x + font_size * 1),int(y + font_size * 15),int(x + font_size * 1),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 15),int(x + font_size * 9),int(y + font_size * 15),fill)
-    oled.show()
+    
     
 def M(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -362,7 +377,7 @@ def M(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 1),int(y + font_size * 1),int(x + font_size * 5),int(y + font_size * 7),fill)
     oled.line(int(x + font_size * 9),int(y + font_size * 1),int(x + font_size * 5),int(y + font_size * 7),fill)
     oled.line(int(x + font_size * 9),int(y + font_size * 15),int(x + font_size * 9),int(y + font_size * 1),fill)
-    oled.show()
+    
 
 def N(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -371,7 +386,7 @@ def N(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 1),int(y + font_size * 15),int(x + font_size * 1),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 1),int(x + font_size * 9),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 9),int(y + font_size * 15),int(x + font_size * 9),int(y + font_size * 1),fill)
-    oled.show()
+    
 
 def O(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -386,7 +401,7 @@ def O(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 4),int(y + font_size * 15),int(x + font_size * 7),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 7),int(y + font_size * 15),int(x + font_size * 10),int(y + font_size * 12),fill)
     oled.line(int(x + font_size * 10),int(y + font_size * 12),int(x + font_size * 10),int(y + font_size * 5),fill)
-    oled.show()
+    
 
 
 def P(x, y, oled, font_size=2, fill=1):
@@ -399,7 +414,7 @@ def P(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 9),int(y + font_size * 4),int(x + font_size * 9),int(y + font_size * 6),fill)
     oled.line(int(x + font_size * 9),int(y + font_size * 6), (x + font_size * 6),int(y + font_size * 9),fill)
     oled.line(int(x + font_size * 5),int(y + font_size * 9),int(x + font_size * 1),int(y + font_size * 9),fill)
-    oled.show() 
+     
 
 def Q(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -415,7 +430,7 @@ def Q(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 7),int(y + font_size * 15),int(x + font_size * 10),int(y + font_size * 12),fill)
     oled.line(int(x + font_size * 10),int(y + font_size * 12),int(x + font_size * 10),int(y + font_size * 5),fill)
     oled.line(int(x + font_size * 6),int(y + font_size * 10),int(x + font_size * 10),int(y + font_size * 15),fill)
-    oled.show()
+    
 
 def R(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -428,7 +443,7 @@ def R(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 9),int(y + font_size * 6), (x + font_size * 6),int(y + font_size * 9),fill)
     oled.line(int(x + font_size * 5),int(y + font_size * 9),int(x + font_size * 1),int(y + font_size * 9),fill)
     oled.line(int(x + font_size * 5),int(y + font_size * 9),int(x + font_size * 9),int(y + font_size * 15),fill)
-    oled.show()
+    
     
 def S(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -447,7 +462,7 @@ def S(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 7),int(y + font_size * 15),int(x + font_size * 4),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 4),int(y + font_size * 15),int(x + font_size * 1),int(y + font_size * 13),fill)
     #oled.line(int(x + font_size * 10),int(y + font_size * 13),int(x + font_size * 7),int(y + font_size * 15),fill)
-    oled.show()
+    
 
 def T(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -455,7 +470,7 @@ def T(x, y, oled, font_size=2, fill=1):
 
     oled.line(int(x + font_size * 5),int(y + font_size * 15),int(x + font_size * 5),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 1),int(x + font_size * 9),int(y + font_size * 1),fill)
-    oled.show()
+    
     
 def U(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -466,7 +481,7 @@ def U(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 3),int(y + font_size * 15),int(x + font_size * 7),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 7),int(y + font_size * 15),int(x + font_size * 9),int(y + font_size * 13),fill)
     oled.line(int(x + font_size * 9),int(y + font_size * 13),int(x + font_size * 9),int(y + font_size * 1),fill)
-    oled.show()
+    
 
 def V(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -474,7 +489,7 @@ def V(x, y, oled, font_size=2, fill=1):
 
     oled.line(int(x + font_size * 1),int(y + font_size * 1),int(x + font_size * 5),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 5),int(y + font_size * 15),int(x + font_size * 9),int(y + font_size * 1),fill)
-    oled.show()
+    
 
 def W(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -484,7 +499,7 @@ def W(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 3),int(y + font_size * 15),int(x + font_size * 5),int(y + font_size * 8),fill)
     oled.line(int(x + font_size * 5),int(y + font_size * 8),int(x + font_size * 8),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 8),int(y + font_size * 15),int(x + font_size * 10),int(y + font_size * 1),fill)
-    oled.show()
+    
 
 def X(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -492,7 +507,7 @@ def X(x, y, oled, font_size=2, fill=1):
 
     oled.line(int(x + font_size * 1),int(y + font_size * 1),int(x + font_size * 9),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 9),int(y + font_size * 1),int(x + font_size * 1),int(y + font_size * 15),fill)
-    oled.show()
+    
 
 def Y(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -501,7 +516,7 @@ def Y(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 5),int(y + font_size * 15),int(x + font_size * 5),int(y + font_size * 7),fill)
     oled.line(int(x + font_size * 5),int(y + font_size * 7),int(x + font_size * 1),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 5),int(y + font_size * 7),int(x + font_size * 10),int(y + font_size * 1),fill)
-    oled.show()
+    
 
 def Z(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -510,7 +525,7 @@ def Z(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 1),int(y + font_size * 1),int(x + font_size * 9),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 15),int(x + font_size * 9),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 15),int(x + font_size * 9),int(y + font_size * 15),fill)
-    oled.show()
+    
 
 # The symbols
 
@@ -520,7 +535,7 @@ def period(x, y, oled, font_size=2, fill=1):
 
     oled.line(int(x + font_size * 1),int(y + font_size * 14),int(x + font_size * 2),int(y + font_size * 14),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 15),int(x + font_size * 2),int(y + font_size * 15),fill)
-    oled.show()
+    
 
 def exclam(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -528,7 +543,7 @@ def exclam(x, y, oled, font_size=2, fill=1):
 
     oled.line(int(x + font_size * 1),int(y + font_size * 14),int(x + font_size * 1),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 1),int(x + font_size * 1),int(y + font_size * 10),fill)
-    oled.show()
+    
 
 def plus(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -536,14 +551,14 @@ def plus(x, y, oled, font_size=2, fill=1):
 
     oled.line(int(x + font_size * 5),int(y + font_size * 5),int(x + font_size * 5),int(y + font_size * 11),fill)
     oled.line(int(x + font_size * 2),int(y + font_size * 8),int(x + font_size * 8),int(y + font_size * 8),fill)
-    oled.show()
+    
     
 def minus(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
 
 
     oled.line(int(x + font_size * 2),int(y + font_size * 8),int(x + font_size * 8),int(y + font_size * 8),fill)
-    oled.show()
+    
     
 def equal(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -551,7 +566,7 @@ def equal(x, y, oled, font_size=2, fill=1):
 
     oled.line(int(x + font_size * 2),int(y + font_size * 6),int(x + font_size * 8),int(y + font_size * 6),fill)
     oled.line(int(x + font_size * 2),int(y + font_size * 9),int(x + font_size * 8),int(y + font_size * 9),fill)
-    oled.show()
+    
 
 def comma(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -560,7 +575,7 @@ def comma(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 1),int(y + font_size * 13),int(x + font_size * 1),int(y + font_size * 14),fill)
     oled.line(int(x + font_size * 2),int(y + font_size * 13),int(x + font_size * 2),int(y + font_size * 17),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 17),int(x + font_size * 2),int(y + font_size * 17),fill)
-    oled.show()
+    
 
 def colon(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -570,7 +585,7 @@ def colon(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 1),int(y + font_size * 15),int(x + font_size * 2),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 6),int(x + font_size * 2),int(y + font_size * 6),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 5),int(x + font_size * 2),int(y + font_size * 5),fill)
-    oled.show()
+    
 
 
 def slash(x, y, oled, font_size=2, fill=1):
@@ -578,7 +593,7 @@ def slash(x, y, oled, font_size=2, fill=1):
 
 
     oled.line(int(x + font_size * 9),int(y + font_size * 1),int(x + font_size * 1),int(y + font_size * 15),fill)
-    oled.show()
+    
     
 def question(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -591,7 +606,7 @@ def question(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 8),int(y + font_size * 6),int(x + font_size * 9),int(y + font_size * 2),fill)
     oled.line(int(x + font_size * 8),int(y + font_size * 1),int(x + font_size * 4),int(y + font_size * 1),fill)
 
-    oled.show()
+    
 
 
 def amp(x, y, oled, font_size=2, fill=1):
@@ -615,7 +630,7 @@ def amp(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 6),int(y + font_size * 15),int(x + font_size * 9),int(y + font_size * 9),fill)
     oled.line(int(x + font_size * 4),int(y + font_size * 8),int(x + font_size * 10),int(y + font_size * 15),fill)
     
-    oled.show()
+    
 
 # The numbers
 
@@ -633,7 +648,7 @@ def zero(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 7),int(y + font_size * 15),int(x + font_size * 10),int(y + font_size * 12),fill)
     oled.line(int(x + font_size * 10),int(y + font_size * 12),int(x + font_size * 10),int(y + font_size * 5),fill)
     oled.line(int(x + font_size * 9),int(y + font_size * 4),int(x + font_size * 2),int(y + font_size * 12),fill)
-    oled.show()
+    
 
 def one(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -641,7 +656,7 @@ def one(x, y, oled, font_size=2, fill=1):
 
     oled.line(int(x + font_size * 5),int(y + font_size * 15),int(x + font_size * 5),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 5),int(y + font_size * 1),int(x + font_size * 2),int(y + font_size * 3),fill)
-    oled.show()
+    
 
 def two(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -654,7 +669,7 @@ def two(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 9),int(y + font_size * 6),int(x + font_size * 2),int(y + font_size * 13),fill)
     oled.line(int(x + font_size * 2),int(y + font_size * 13),int(x + font_size * 1),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 15),int(x + font_size * 10),int(y + font_size * 15),fill)
-    oled.show()
+    
     
 
 def three(x, y, oled, font_size=2, fill=1):
@@ -673,7 +688,7 @@ def three(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 7),int(y + font_size * 15),int(x + font_size * 3),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 3),int(y + font_size * 15),int(x + font_size * 1),int(y + font_size * 13),fill)    
 
-    oled.show()
+    
 
 def four(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -682,7 +697,7 @@ def four(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 8),int(y + font_size * 1),int(x + font_size * 8),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 1),int(x + font_size * 1),int(y + font_size * 7),fill)
     oled.line(int(x + font_size * 1),int(y + font_size * 7),int(x + font_size * 9),int(y + font_size * 7),fill)
-    oled.show()
+    
 
 def five(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -696,7 +711,7 @@ def five(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 9),int(y + font_size * 12),int(x + font_size * 7),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 7),int(y + font_size * 15),int(x + font_size * 3),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 3),int(y + font_size * 15),int(x + font_size * 1),int(y + font_size * 13),fill)
-    oled.show()
+    
 
 def six(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -714,7 +729,7 @@ def six(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 10),int(y + font_size * 9),int(x + font_size * 8),int(y + font_size * 7),fill)
     oled.line(int(x + font_size * 8),int(y + font_size * 7),int(x + font_size * 4),int(y + font_size * 7),fill)
     oled.line(int(x + font_size * 4),int(y + font_size * 7),int(x + font_size * 2),int(y + font_size * 9),fill)
-    oled.show()
+    
     
 
 def seven(x, y, oled, font_size=2, fill=1):
@@ -723,7 +738,7 @@ def seven(x, y, oled, font_size=2, fill=1):
 
     oled.line(int(x + font_size * 1),int(y + font_size * 1),int(x + font_size * 10),int(y + font_size * 1),fill)
     oled.line(int(x + font_size * 10),int(y + font_size * 1),int(x + font_size * 3),int(y + font_size * 15),fill)
-    oled.show()
+    
     
 def eight(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -746,7 +761,7 @@ def eight(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 9),int(y + font_size * 10),int(x + font_size * 6),int(y + font_size * 7),fill)
     oled.line(int(x + font_size * 6),int(y + font_size * 7),int(x + font_size * 4),int(y + font_size * 7),fill)
     oled.line(int(x + font_size * 4),int(y + font_size * 7),int(x + font_size * 2),int(y + font_size * 9),fill)
-    oled.show()
+    
 
 def nine(x, y, oled, font_size=2, fill=1):
     font_size = font_size / 3  # divide by 3, which is the smallest visible font size
@@ -764,7 +779,3 @@ def nine(x, y, oled, font_size=2, fill=1):
     oled.line(int(x + font_size * 9),int(y + font_size * 13),int(x + font_size * 7),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 7),int(y + font_size * 15),int(x + font_size * 3),int(y + font_size * 15),fill)
     oled.line(int(x + font_size * 3),int(y + font_size * 15),int(x + font_size * 1),int(y + font_size * 13),fill)
-    oled.show()
-
-def space(x, y, oled, font_size=2, fill=1):
-    oled.show()
