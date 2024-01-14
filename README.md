@@ -13,12 +13,15 @@ Modifications based on [ssd1306big](https://github.com/nickpmulder/ssd1306big) b
 - Should works on ESP8266 as well but havent tested.
 
 ### Additional features to the original ssd1306 library:
-- Added a function wrap() that display text that can set different font size. 
+- ***Set Font Size*** : Added a function wrap() that display text that can set different font size.
+  
 (wrap is based on a new, larger font was drawn using framebuffer lines by Nick Mulder.)
 
-- Added a function bold_text() that display text in bold style
-- Added a function bold_wrap() that display wrap() in bold style
-- Added a function bold_wrap() that display wrap() in overlap (3D-like) style (overlap values are 0=no overlap,1=one overlap,2=two overlap(default))
+- ***Bold Text Style*** : Added a function bold_text() that display text in bold style
+- ***Bold Text Style for wrap()*** : Added a function bold_wrap() that display wrap() in bold style
+- ***Overlap Text Style for wrap()*** : Added a function bold_wrap() that display wrap() in overlap (3D-like) style
+  
+(overlap values are 0=no overlap,1=one overlap,2=two overlap(default))
 
  This library is open source, and can be used for free for any purpose. 
 
