@@ -8,11 +8,6 @@ i2c = SoftI2C(sda=Pin(1), scl=Pin(0))
 # Using default address 0x3C
 display = ssd1306.SSD1306_I2C(128, 64, i2c)
 
-def draw_bold_text(display, text, x, y, color):
-    # Draw the text slightly offset to create a bold effect
-    display.text(text, x + 1, y, color)
-    display.text(text, x, y, color)
-
 # Fill White Background
 display.fill(1)
 
@@ -42,8 +37,7 @@ while True:
     display.wrap("ABC", 28, 24, 3)
 
     # Display bold text
-    draw_bold_text(display, "1234", 28, 48, 1)
-    #TODO: display.bold_text()
+    display.bold_text("1234", 28, 48, 1)
 
     # Draw some vertical lines
     display.vline(9, 8, 40, 1)
@@ -64,3 +58,7 @@ while True:
 
     # Display a text in white background with default font size 4
     display.wrap("HELLO", 16, 20, 4, 0)
+
+    # Update Display
+    display.show()
+
